@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sindhuja Kurimilla — Software Engineer</title>
+<meta name="description" content="Portfolio of Sindhuja Kurimilla, B.Tech CSE final year student — Python, Flask, Data Science, SQL projects.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:#070b0b;
+    --surface:#0e1515;
+    --surface-2:#121b1a;
+    --border:#1d2826;
+    --border-soft:#161f1e;
+    --teal:#14b8a6;
+    --teal-bright:#2dd4bf;
+    --teal-dim:#0d6e63;
+    --gold:#f0b94f;
+    --gold-bright:#ffd479;
+    --gold-dim:#a87c2e;
+    --text:#eef7f5;
+    --text-dim:#92a8a4;
+    --text-faint:#566a66;
+    --mono:'JetBrains Mono', monospace;
+    --sans:'Inter', sans-serif;
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+
+  html{ scroll-behavior:smooth; }
+
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+
+  ::selection{ background:var(--teal-dim); color:var(--text); }
+
+  a{ color:inherit; text-decoration:none; }
+
+  /* ---------- scrollbar ---------- */
+  ::-webkit-scrollbar{ width:8px; }
+  ::-webkit-scrollbar-track{ background:var(--bg); }
+  ::-webkit-scrollbar-thumb{ background:var(--border); border-radius:4px; }
+  ::-webkit-scrollbar-thumb:hover{ background:var(--teal-dim); }
+
+  /* ---------- canvas bg ---------- */
+  #bg-canvas{
+    position:fixed;
+    top:0; left:0;
+    width:100%; height:100%;
+    z-index:0;
+    opacity:0.5;
+  }
+
+  .hero-glow{
+    position:absolute;
+    top:-10%;
+    left:50%;
+    transform:translateX(-50%);
+    width:min(900px,90vw);
+    height:600px;
+    background:radial-gradient(ellipse at center, rgba(20,184,166,0.16) 0%, rgba(240,185,79,0.06) 40%, transparent 70%);
+    pointer-events:none;
+    z-index:0;
+    filter:blur(40px);
+  }
+
+  /* ---------- nav ---------- */
+  nav{
+    position:fixed;
+    top:0; left:0; right:0;
+    z-index:100;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:20px clamp(20px,5vw,64px);
+    background:rgba(10,14,14,0.75);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--border-soft);
+  }
+
+  .nav-logo{
+    font-family:var(--mono);
+    font-weight:700;
+    font-size:0.95rem;
+    color:var(--teal-bright);
+    letter-spacing:0.02em;
+  }
+  .nav-logo span{ color:var(--text-faint); }
+
+  .nav-links{
+    display:flex;
+    gap:clamp(16px,3vw,36px);
+    font-family:var(--mono);
+    font-size:0.8rem;
+  }
+  .nav-links a{
+    color:var(--text-dim);
+    position:relative;
+    padding-bottom:4px;
+    transition:color 0.25s;
+  }
+  .nav-links a::after{
+    content:'';
+    position:absolute;
+    left:0; bottom:0;
+    width:0; height:1px;
+    background:var(--teal);
+    transition:width 0.25s;
+  }
+  .nav-links a:hover{ color:var(--text); }
+  .nav-links a:hover::after{ width:100%; }
+  .nav-links a.cta{
+    color:var(--teal-bright);
+    border:1px solid var(--teal-dim);
+    padding:6px 14px;
+    border-radius:4px;
+  }
+  .nav-links a.cta:hover{ background:rgba(20,184,166,0.08); }
+  .nav-links a.cta::after{ display:none; }
+
+  @media (max-width:680px){
+    .nav-links{ display:none; }
+  }
+
+  /* ---------- sections shared ---------- */
+  section{
+    position:relative;
+    z-index:1;
+    padding:clamp(80px,12vh,140px) clamp(20px,6vw,64px);
+    max-width:1100px;
+    margin:0 auto;
+  }
+
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:0.78rem;
+    color:var(--teal);
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    margin-bottom:14px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .eyebrow::before{
+    content:'';
+    width:24px; height:1px;
+    background:var(--teal-dim);
+  }
+
+  h2.section-title{
+    font-family:var(--mono);
+    font-weight:700;
+    font-size:clamp(1.6rem,4vw,2.4rem);
+    margin-bottom:48px;
+    letter-spacing:-0.01em;
+  }
+
+  /* ---------- hero ---------- */
+  .hero{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    padding-top:120px;
+    position:relative;
+  }
+  .hero > *:not(.hero-glow){ position:relative; z-index:1; }
+
+  .terminal{
+    font-family:var(--mono);
+    font-size:0.85rem;
+    color:var(--text-faint);
+    margin-bottom:28px;
+  }
+  .terminal .prompt{ color:var(--teal); }
+  .terminal .cursor{
+    display:inline-block;
+    width:8px; height:1em;
+    background:var(--teal-bright);
+    margin-left:2px;
+    animation:blink 1s steps(1) infinite;
+    vertical-align:text-bottom;
+  }
+  @keyframes blink{ 50%{ opacity:0; } }
+
+  .hero h1{
+    font-family:var(--mono);
+    font-weight:800;
+    font-size:clamp(2.4rem,7vw,4.6rem);
+    line-height:1.05;
+    letter-spacing:-0.02em;
+    margin-bottom:20px;
+    position:relative;
+    z-index:1;
+  }
+  .hero h1 .accent{
+    background:linear-gradient(100deg, var(--teal-bright) 10%, var(--gold-bright) 90%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    -webkit-text-fill-color:transparent;
+  }
+
+  .hero .role{
+    font-family:var(--sans);
+    font-size:clamp(1.05rem,2.2vw,1.4rem);
+    color:var(--text-dim);
+    max-width:640px;
+    margin-bottom:36px;
+  }
+  .hero .role strong{ color:var(--text); font-weight:600; }
+
+  .hero-meta{
+    display:flex;
+    flex-wrap:wrap;
+    gap:28px;
+    margin-bottom:44px;
+    font-family:var(--mono);
+    font-size:0.82rem;
+    color:var(--text-faint);
+  }
+  .hero-meta span{ color:var(--teal-dim); }
+
+  .hero-actions{
+    display:flex;
+    flex-wrap:wrap;
+    gap:16px;
+  }
+
+  .btn{
+    font-family:var(--mono);
+    font-size:0.85rem;
+    font-weight:500;
+    padding:13px 26px;
+    border-radius:6px;
+    border:1px solid var(--border);
+    transition:all 0.25s;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+  }
+  .btn-primary{
+    background:linear-gradient(135deg, var(--teal) 0%, var(--teal-dim) 100%);
+    color:#06120f;
+    border-color:var(--teal);
+    font-weight:600;
+  }
+  .btn-primary:hover{
+    background:linear-gradient(135deg, var(--teal-bright) 0%, var(--teal) 100%);
+    box-shadow:0 0 28px rgba(45,212,191,0.4);
+    transform:translateY(-2px);
+  }
+  .btn-ghost{
+    color:var(--text-dim);
+    border-color:var(--border);
+  }
+  .btn-ghost:hover{
+    color:var(--gold-bright);
+    border-color:var(--gold-dim);
+    box-shadow:0 0 16px rgba(240,185,79,0.12);
+  }
+
+  .scroll-hint{
+    position:absolute;
+    bottom:36px;
+    left:50%;
+    transform:translateX(-50%);
+    font-family:var(--mono);
+    font-size:0.7rem;
+    color:var(--text-faint);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:8px;
+    animation:floaty 2.4s ease-in-out infinite;
+  }
+  @keyframes floaty{
+    0%,100%{ transform:translate(-50%,0); }
+    50%{ transform:translate(-50%,8px); }
+  }
+
+  /* ---------- about ---------- */
+  .about-grid{
+    display:grid;
+    grid-template-columns:1.3fr 1fr;
+    gap:48px;
+    align-items:start;
+  }
+  @media (max-width:780px){
+    .about-grid{ grid-template-columns:1fr; }
+  }
+
+  .about-text p{
+    color:var(--text-dim);
+    margin-bottom:18px;
+    font-size:1.02rem;
+  }
+  .about-text strong{ color:var(--text); font-weight:600; }
+
+  .info-card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:28px;
+  }
+  .info-row{
+    display:flex;
+    justify-content:space-between;
+    padding:13px 0;
+    border-bottom:1px solid var(--border-soft);
+    font-size:0.92rem;
+  }
+  .info-row:last-child{ border-bottom:none; }
+  .info-row .label{
+    font-family:var(--mono);
+    color:var(--text-faint);
+    font-size:0.78rem;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+  }
+  .info-row .value{ color:var(--text); text-align:right; }
+
+  /* ---------- education hover cards ---------- */
+  .edu-list{
+    margin-top:48px;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+  }
+  .edu-card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-left:3px solid var(--border);
+    border-radius:10px;
+    padding:22px 26px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
+    transition:all 0.3s;
+    cursor:default;
+  }
+  .edu-card:hover{
+    border-color:var(--teal-dim);
+    border-left-color:var(--gold);
+    background:var(--surface-2);
+    transform:translateX(6px);
+    box-shadow:0 8px 24px rgba(0,0,0,0.35);
+  }
+  .edu-icon{ font-size:1.6rem; flex-shrink:0; }
+  .edu-info{ flex:1; }
+  .edu-info .school{ font-weight:600; font-size:0.98rem; }
+  .edu-info .detail{ color:var(--text-dim); font-size:0.86rem; margin-top:3px; }
+  .edu-score{
+    font-family:var(--mono);
+    font-size:1rem;
+    font-weight:700;
+    color:var(--gold-bright);
+    text-align:right;
+    white-space:nowrap;
+  }
+  .edu-score small{ display:block; color:var(--text-faint); font-size:0.68rem; margin-top:2px; font-weight:400; }
+
+  /* ---------- projects ---------- */
+  .project-card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:12px;
+    overflow:hidden;
+    margin-bottom:28px;
+    transition:border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+  }
+  .project-card:hover{
+    border-color:var(--teal-dim);
+    box-shadow:0 12px 32px rgba(0,0,0,0.4), 0 0 0 1px rgba(20,184,166,0.08);
+    transform:translateY(-2px);
+  }
+
+  .project-body{
+    padding:32px;
+    display:grid;
+    grid-template-columns:1fr;
+    gap:24px;
+  }
+  .project-card.has-media .project-body{
+    grid-template-columns:1fr 280px;
+  }
+  @media (max-width:760px){
+    .project-card.has-media .project-body{ grid-template-columns:1fr; }
+  }
+
+  .project-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:16px;
+    margin-bottom:14px;
+  }
+  .project-title{
+    font-family:var(--mono);
+    font-weight:700;
+    font-size:1.2rem;
+  }
+  .project-icon{ font-size:1.3rem; margin-right:10px; }
+  .project-tag{
+    font-family:var(--mono);
+    font-size:0.68rem;
+    color:var(--teal);
+    border:1px solid var(--teal-dim);
+    padding:3px 10px;
+    border-radius:20px;
+    white-space:nowrap;
+    text-transform:uppercase;
+    letter-spacing:0.04em;
+  }
+  .project-desc{
+    color:var(--text-dim);
+    font-size:0.94rem;
+    margin-bottom:18px;
+  }
+  .project-stack{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  .stack-pill{
+    font-family:var(--mono);
+    font-size:0.72rem;
+    background:var(--surface-2);
+    border:1px solid var(--border);
+    color:var(--text-dim);
+    padding:5px 11px;
+    border-radius:5px;
+  }
+  .project-media{
+    border-radius:8px;
+    overflow:hidden;
+    border:1px solid var(--border);
+    background:#000;
+    display:flex;
+    align-items:center;
+  }
+  .project-media video{
+    width:100%;
+    display:block;
+  }
+  .project-links{
+    margin-top:18px;
+    display:flex;
+    gap:14px;
+    font-family:var(--mono);
+    font-size:0.78rem;
+  }
+  .project-links a{
+    color:var(--text-dim);
+    border-bottom:1px solid var(--border);
+    padding-bottom:2px;
+    transition:color 0.25s, border-color 0.25s;
+  }
+  .project-links a:hover{ color:var(--teal-bright); border-color:var(--teal); }
+  .project-links .disabled{
+    color:var(--text-faint);
+    border-bottom:1px dashed var(--border);
+    cursor:default;
+  }
+
+  /* ---------- certifications ---------- */
+  .cert-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(280px,1fr));
+    gap:24px;
+  }
+  .cert-card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:10px;
+    overflow:hidden;
+    transition:transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+  }
+  .cert-card:hover{
+    transform:translateY(-6px);
+    border-color:var(--gold-dim);
+    box-shadow:0 16px 32px rgba(0,0,0,0.4);
+  }
+  .cert-img-wrap{
+    width:100%;
+    aspect-ratio:16/10;
+    overflow:hidden;
+    background:#000;
+  }
+  .cert-img-wrap img{
+    width:100%; height:100%;
+    object-fit:cover;
+    display:block;
+    transition:transform 0.5s;
+  }
+  .cert-card:hover .cert-img-wrap img{ transform:scale(1.06); }
+  .cert-info{ padding:18px 20px; }
+  .cert-info .cert-name{ font-weight:600; font-size:0.95rem; margin-bottom:4px; }
+  .cert-info .cert-issuer{
+    font-family:var(--mono);
+    font-size:0.76rem;
+    color:var(--teal);
+  }
+  .cert-info .cert-date{
+    font-family:var(--mono);
+    font-size:0.72rem;
+    color:var(--text-faint);
+    margin-top:6px;
+  }
+
+  /* ---------- resume embed ---------- */
+  .resume-wrap{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:32px;
+  }
+  .resume-pages{
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+    align-items:center;
+  }
+  .resume-pages img{
+    width:100%;
+    max-width:720px;
+    border-radius:8px;
+    border:1px solid var(--border-soft);
+    box-shadow:0 16px 40px rgba(0,0,0,0.45);
+    display:block;
+  }
+  .resume-actions{
+    display:flex;
+    justify-content:center;
+    gap:16px;
+    margin-top:28px;
+    flex-wrap:wrap;
+  }
+
+  /* ---------- skills ---------- */
+  .skills-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(220px,1fr));
+    gap:20px;
+  }
+  .skill-group{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:22px;
+  }
+  .skill-group .group-title{
+    font-family:var(--mono);
+    font-size:0.78rem;
+    color:var(--teal);
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    margin-bottom:14px;
+  }
+  .skill-tags{ display:flex; flex-wrap:wrap; gap:8px; }
+  .skill-tags span{
+    font-size:0.84rem;
+    background:var(--surface-2);
+    padding:6px 12px;
+    border-radius:6px;
+    color:var(--text-dim);
+  }
+
+  /* ---------- contact / footer ---------- */
+  footer{
+    position:relative;
+    z-index:1;
+    padding:90px clamp(20px,6vw,64px) 50px;
+    text-align:center;
+    border-top:1px solid var(--border-soft);
+    margin-top:60px;
+  }
+  footer h2{
+    font-family:var(--mono);
+    font-weight:700;
+    font-size:clamp(1.8rem,5vw,3rem);
+    margin-bottom:18px;
+  }
+  footer h2 .accent{ color:var(--teal-bright); }
+  footer p{ color:var(--text-dim); max-width:480px; margin:0 auto 36px; }
+
+  .contact-links{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:16px;
+    margin-bottom:60px;
+  }
+
+  .footer-bottom{
+    font-family:var(--mono);
+    font-size:0.75rem;
+    color:var(--text-faint);
+  }
+
+  /* ---------- reveal on scroll ---------- */
+  .reveal{
+    opacity:0;
+    transform:translateY(24px);
+    transition:opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+
+  @media (prefers-reduced-motion: reduce){
+    .reveal{ opacity:1; transform:none; transition:none; }
+    .scroll-hint{ animation:none; }
+    .terminal .cursor{ animation:none; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="bg-canvas"></canvas>
+
+<nav>
+  <div class="nav-logo">sindhuja<span>.dev</span></div>
+  <div class="nav-links">
+    <a href="#about">about</a>
+    <a href="#projects">projects</a>
+    <a href="#certifications">certs</a>
+    <a href="#resume">resume</a>
+    <a href="#skills">skills</a>
+    <a href="#contact" class="cta">contact</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="terminal">
+    <span class="prompt">~$</span> whoami<span class="cursor"></span>
+  </div>
+  <h1>Kurimilla Sindhuja<br><span class="accent">Software Engineer</span></h1>
+  <p class="role">Final-year <strong>B.Tech CSE</strong> student with a focus on <strong>Data Science</strong>, building practical full-stack projects in Python and Flask. Currently deep in <strong>DSA</strong> prep for campus placements.</p>
+
+  <div class="hero-meta">
+    <div><span>degree</span> B.Tech CSE, JNTUHUCER · 2027</div>
+    <div><span>cgpa</span> 8.7</div>
+    <div><span>based in</span> Mancherial, Telangana</div>
+  </div>
+
+  <div class="hero-actions">
+    <a href="#projects" class="btn btn-primary">View Projects →</a>
+    <a href="assets/sindhuja-kurimilla-resume.pdf" target="_blank" class="btn btn-ghost">📄 Resume</a>
+    <a href="#contact" class="btn btn-ghost">Get in Touch</a>
+  </div>
+
+  <div class="scroll-hint">
+    <span>scroll</span>
+    <span>↓</span>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="eyebrow">01 / About</div>
+  <h2 class="section-title">Who I am</h2>
+
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <p>I'm a final-year Computer Science student with a strong interest in <strong>Data Science and Artificial Intelligence</strong>, skilled in Python, SQL, and basic machine learning concepts.</p>
+      <p>My internship at <strong>Cognifyz Technologies</strong> gave me hands-on full-stack development experience working with Python and Flask. My own projects range from a complaint management system to a data-driven learning app for children, alongside smaller game-logic builds in Python.</p>
+      <p>Right now I'm sharpening my <strong>data structures & algorithms</strong> fundamentals and preparing for campus placements, with TCS as a primary target — across Junior Python Developer, Software Engineer, and Cloud Support Engineer tracks.</p>
+    </div>
+
+    <div class="info-card reveal">
+      <div class="info-row"><span class="label">Internship</span><span class="value">Cognifyz Technologies</span></div>
+      <div class="info-row"><span class="label">Focus</span><span class="value">Full Stack Dev</span></div>
+      <div class="info-row"><span class="label">HackerRank</span><span class="value">Python ★★ · 40+ solved</span></div>
+      <div class="info-row"><span class="label">Target</span><span class="value">TCS NQT</span></div>
+      <div class="info-row"><span class="label">Status</span><span class="value">Open to opportunities</span></div>
+    </div>
+  </div>
+
+  <div class="edu-list">
+    <div class="edu-card reveal">
+      <div class="edu-icon">🎓</div>
+      <div class="edu-info">
+        <div class="school">JNTUHUCER, Rajanna Sircilla</div>
+        <div class="detail">B.Tech, Computer Science & Engineering</div>
+      </div>
+      <div class="edu-score">8.7 CGPA<small>2023 — 2027</small></div>
+    </div>
+    <div class="edu-card reveal">
+      <div class="edu-icon">📘</div>
+      <div class="edu-info">
+        <div class="school">TS Board (Intermediate)</div>
+        <div class="detail">12th Standard</div>
+      </div>
+      <div class="edu-score">94%<small>2021 — 2023</small></div>
+    </div>
+    <div class="edu-card reveal">
+      <div class="edu-icon">📗</div>
+      <div class="edu-info">
+        <div class="school">Ujwala High School</div>
+        <div class="detail">10th Standard, TS Board</div>
+      </div>
+      <div class="edu-score">100%<small>2020 — 2021</small></div>
+    </div>
+    <div class="edu-card reveal">
+      <div class="edu-icon">💼</div>
+      <div class="edu-info">
+        <div class="school">Cognifyz Technologies</div>
+        <div class="detail">Full Stack Development Internship</div>
+      </div>
+      <div class="edu-score">Dec '25 — Jan '26<small>Completed</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="eyebrow">02 / Projects</div>
+  <h2 class="section-title">Things I've built</h2>
+
+  <div class="project-card reveal">
+    <div class="project-body">
+      <div>
+        <div class="project-head">
+          <div class="project-title"><span class="project-icon">🗂️</span>Smart Complaint Management System</div>
+          <div class="project-tag">Web App</div>
+        </div>
+        <p class="project-desc">A web-based complaint management system with separate user and admin modules — complaint registration, status tracking, feedback collection, and a dashboard. Integrated GPS-based location tracking for complaint verification, with a responsive interface for efficient handling.</p>
+        <div class="project-stack">
+          <span class="stack-pill">Python</span>
+          <span class="stack-pill">Flask</span>
+          <span class="stack-pill">SQLite</span>
+          <span class="stack-pill">HTML/CSS</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/sindhuja-kurimilla/smart_complaint_system" target="_blank" rel="noopener">View Source →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="project-card reveal">
+    <div class="project-body">
+      <div>
+        <div class="project-head">
+          <div class="project-title"><span class="project-icon">🧸</span>Smart Child Learning App</div>
+          <div class="project-tag">Data Science · Mobile</div>
+        </div>
+        <p class="project-desc">A data-driven learning app for children with interactive educational content, personalized learning suggestions, and smart quiz generation. Added voice assistance, progress tracking, and a child-friendly UI to keep the experience engaging.</p>
+        <div class="project-stack">
+          <span class="stack-pill">Python</span>
+          <span class="stack-pill">Data Science</span>
+          <span class="stack-pill">React Native</span>
+          <span class="stack-pill">SQLite</span>
+        </div>
+        <div class="project-links">
+          <span class="disabled">Source private</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="project-card has-media reveal">
+    <div class="project-body">
+      <div>
+        <div class="project-head">
+          <div class="project-title"><span class="project-icon">🎲</span>Ludo Dice Game</div>
+          <div class="project-tag">Python · Game</div>
+        </div>
+        <p class="project-desc">A Ludo-based dice game built in Python — implements turn logic, dice rolls, and piece movement rules in a simplified playable version. Demo video alongside.</p>
+        <div class="project-stack">
+          <span class="stack-pill">Python</span>
+          <span class="stack-pill">Game Logic</span>
+        </div>
+        <div class="project-links">
+          <span class="disabled">GitHub repo coming soon</span>
+        </div>
+      </div>
+      <div class="project-media">
+        <video src="assets/ludo-dice-game.mp4" controls muted playsinline loop></video>
+      </div>
+    </div>
+  </div>
+
+  <div class="project-card reveal">
+    <div class="project-body">
+      <div>
+        <div class="project-head">
+          <div class="project-title"><span class="project-icon">🐍</span>Snake Game</div>
+          <div class="project-tag">Python · Game</div>
+        </div>
+        <p class="project-desc">A classic Snake Game built using Python and the Pygame library — handles grid movement, collision detection, growing snake length, and score tracking.</p>
+        <div class="project-stack">
+          <span class="stack-pill">Python</span>
+          <span class="stack-pill">Pygame</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/sindhuja-kurimilla/snnakegame.py" target="_blank" rel="noopener">View Source →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="certifications">
+  <div class="eyebrow">03 / Certifications</div>
+  <h2 class="section-title">Verified learning</h2>
+
+  <div class="cert-grid">
+    <div class="cert-card reveal">
+      <div class="cert-img-wrap">
+        <img src="certificates/cognifyz-internship.jpeg" alt="Cognifyz Technologies internship completion certificate" loading="lazy">
+      </div>
+      <div class="cert-info">
+        <div class="cert-name">Full Stack Development Internship</div>
+        <div class="cert-issuer">Cognifyz Technologies</div>
+        <div class="cert-date">20 Dec 2025 — 20 Jan 2026 · ID: CTI/A1/C273871</div>
+      </div>
+    </div>
+
+    <div class="cert-card reveal">
+      <div class="cert-img-wrap">
+        <img src="certificates/setwin-iot-robotics.jpeg" alt="SETWIN IoT and Robotics certificate" loading="lazy">
+      </div>
+      <div class="cert-info">
+        <div class="cert-name">IoT and Robotics — Skill Upgradation Training</div>
+        <div class="cert-issuer">SETWIN · TBOCWWB</div>
+        <div class="cert-date">Issued 05 Jan 2024 · 6 month course</div>
+      </div>
+    </div>
+
+    <div class="cert-card reveal">
+      <div class="cert-img-wrap">
+        <img src="certificates/be10x-ai-tools-workshop.png" alt="Be10X AI Tools Workshop certificate" loading="lazy">
+      </div>
+      <div class="cert-info">
+        <div class="cert-name">ChatGPT & Productivity Tools Workshop</div>
+        <div class="cert-issuer">Be10X</div>
+        <div class="cert-date">Issued 18 Jan 2026</div>
+      </div>
+    </div>
+
+    <div class="cert-card reveal">
+      <div class="cert-img-wrap">
+        <img src="certificates/officemaster-powerbi-workshop.jpeg" alt="OfficeMaster PowerBI Workshop certificate" loading="lazy">
+      </div>
+      <div class="cert-info">
+        <div class="cert-name">PowerBI Workshop</div>
+        <div class="cert-issuer">OfficeMaster</div>
+        <div class="cert-date">Issued 25 Jan 2026</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESUME -->
+<section id="resume">
+  <div class="eyebrow">04 / Resume</div>
+  <h2 class="section-title">My resume</h2>
+
+  <div class="resume-wrap reveal">
+    <div class="resume-pages">
+      <img src="assets/resume-page-1.jpg" alt="Resume page 1" loading="lazy">
+      <img src="assets/resume-page-2.jpg" alt="Resume page 2" loading="lazy">
+    </div>
+    <div class="resume-actions">
+      <a href="assets/sindhuja-kurimilla-resume.pdf" target="_blank" class="btn btn-primary">📄 Open Full PDF</a>
+      <a href="assets/sindhuja-kurimilla-resume.pdf" download class="btn btn-ghost">⬇ Download</a>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="eyebrow">05 / Skills</div>
+  <h2 class="section-title">Toolbox</h2>
+
+  <div class="skills-grid">
+    <div class="skill-group reveal">
+      <div class="group-title">Languages</div>
+      <div class="skill-tags">
+        <span>Python</span><span>SQL</span>
+      </div>
+    </div>
+    <div class="skill-group reveal">
+      <div class="group-title">Web</div>
+      <div class="skill-tags">
+        <span>HTML</span><span>CSS</span><span>JavaScript</span><span>Flask</span><span>React Native (basics)</span>
+      </div>
+    </div>
+    <div class="skill-group reveal">
+      <div class="group-title">Libraries</div>
+      <div class="skill-tags">
+        <span>Numpy</span><span>Matplotlib</span>
+      </div>
+    </div>
+    <div class="skill-group reveal">
+      <div class="group-title">Cloud & DevOps</div>
+      <div class="skill-tags">
+        <span>AWS (basics)</span><span>GitHub</span><span>Jenkins (basics)</span><span>Vercel</span>
+      </div>
+    </div>
+    <div class="skill-group reveal">
+      <div class="group-title">Tools</div>
+      <div class="skill-tags">
+        <span>Git</span><span>VS Code</span><span>Jupyter</span><span>Antigravity</span>
+      </div>
+    </div>
+    <div class="skill-group reveal">
+      <div class="group-title">Currently learning</div>
+      <div class="skill-tags">
+        <span>DSA</span><span>Advanced SQL</span><span>System basics</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<footer id="contact">
+  <h2>Let's <span class="accent">build</span> something.</h2>
+  <p>Open to internships, junior developer roles, and anything that lets me write real code for real problems.</p>
+
+  <div class="contact-links">
+    <a href="mailto:sindhujakurimilla@gmail.com" class="btn btn-primary">✉ Email Me</a>
+    <a href="tel:+919392818968" class="btn btn-ghost">📞 +91 93928 18968</a>
+    <a href="assets/sindhuja-kurimilla-resume.pdf" target="_blank" class="btn btn-ghost">📄 Resume</a>
+    <a href="https://github.com/sindhuja-kurimilla" target="_blank" rel="noopener" class="btn btn-ghost">GitHub</a>
+    <a href="https://linkedin.com/in/sindhuja-kurimilla-a1006a303" target="_blank" rel="noopener" class="btn btn-ghost">LinkedIn</a>
+  </div>
+
+  <div class="footer-bottom">© 2026 Kurimilla Sindhuja · sindhujakurimilla@gmail.com · +91 93928 18968</div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+  // ---------- Three.js particle field ----------
+  let scene, camera, renderer, particles;
+  const canvas = document.getElementById('bg-canvas');
+
+  function initThree(){
+    scene = new THREE.Scene();
+    camera = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, 0.1, 1000);
+    camera.position.z = 50;
+
+    renderer = new THREE.WebGLRenderer({ canvas, alpha:true, antialias:true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    const count = 320;
+    const geo = new THREE.BufferGeometry();
+    const positions = new Float32Array(count*3);
+    for(let i=0;i<count;i++){
+      positions[i*3] = (Math.random()-0.5)*140;
+      positions[i*3+1] = (Math.random()-0.5)*140;
+      positions[i*3+2] = (Math.random()-0.5)*100;
+    }
+    geo.setAttribute('position', new THREE.BufferAttribute(positions,3));
+
+    const mat = new THREE.PointsMaterial({
+      color: 0x14b8a6,
+      size: 0.9,
+      transparent:true,
+      opacity:0.6,
+      sizeAttenuation:true
+    });
+
+    particles = new THREE.Points(geo, mat);
+    scene.add(particles);
+
+    window.addEventListener('resize', onResize);
+    animate();
+  }
+
+  function onResize(){
+    camera.aspect = window.innerWidth/window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  }
+
+  let mouseX = 0, mouseY = 0;
+  window.addEventListener('mousemove', (e)=>{
+    mouseX = (e.clientX/window.innerWidth - 0.5);
+    mouseY = (e.clientY/window.innerHeight - 0.5);
+  });
+
+  function animate(){
+    requestAnimationFrame(animate);
+    particles.rotation.y += 0.0006;
+    particles.rotation.x += 0.0002;
+    camera.position.x += (mouseX*6 - camera.position.x) * 0.02;
+    camera.position.y += (-mouseY*6 - camera.position.y) * 0.02;
+    camera.lookAt(scene.position);
+    renderer.render(scene, camera);
+  }
+
+  if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    try{ initThree(); }catch(e){ console.warn('Three.js failed to init', e); }
+  }
+
+  // ---------- scroll reveal ----------
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add('in');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold:0.12 });
+  revealEls.forEach(el=>io.observe(el));
+</script>
+
+</body>
+</html>
